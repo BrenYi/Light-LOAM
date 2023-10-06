@@ -1,0 +1,6 @@
+<launch>
+<arg name="rviz_file" default="/home/yi/research/loam_workspace/src/A-LOAM_test/rviz_cfg/view.rviz"/>
+<arg name="kitti_path" default="/media/yi/T7/kitti_00/outcome/raw_data_from_kitti/kitti_02.bag"/>
+<node pkg="rosbag" type="play" name="player" output="screen" args="$(arg kitti_path) --clock -d 1"/> 
+<node pkg="rviz" type="rviz" name="rviz1" output="screen" args="-d $(arg rviz_file)"/>
+</launch>
