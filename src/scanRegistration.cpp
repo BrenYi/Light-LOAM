@@ -121,20 +121,6 @@ void removeClosedPointCloud(const pcl::PointCloud<PointT> &cloud_in,
     cloud_out.is_dense = true;
 }
 
-//new add
-inline float Distance(pcl::PointXYZI& a)
-{
-    return std::sqrt(a.x*a.x  + a.y*a.y + a.z*a.z);
-}
-
-inline float angle_cal(pcl::PointXYZI& ri, pcl::PointXYZI& le, pcl::PointXYZI& goal)
-{
-    float dot =  (ri.x - goal.x)*(le.x - goal.x) + (ri.y - goal.y)*(le.y - goal.y) + (ri.z - goal.z)*(le.z - goal.z);
-    float length = std::sqrt((ri.x - goal.x)*(ri.x - goal.x) + (ri.y - goal.y)*(ri.y - goal.y) + (ri.z - goal.z)*(ri.z - goal.z)) * std::sqrt((le.x - goal.x)*(le.x - goal.x) + (le.y - goal.y)*(le.y - goal.y) + (le.z - goal.z)*(le.z - goal.z));
-    float angle = std::acos(dot / length) ;
-    return (angle * 180 / M_PI);
-}
-//new add
 void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
 {
     if (!systemInited)
@@ -212,17 +198,6 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
         {   
             scanID =  int((angle  - lowerBound) * _factor + 0.5);
             
-            // if (angle >= -8.83)
-            //     scanID = int((2 - angle) * 3.0 + 0.5);
-            // else
-            //     scanID = N_SCANS / 2 + int((-8.83 - angle) * 2.0 + 0.5);
-
-            // // use [0 50]  > 50 remove outlies 
-            // if (angle > 2 || angle < -24.33 || scanID > 50 || scanID < 0)
-            // {
-            //     count--;
-            //     continue;
-            // }
             if (scanID >= N_SCANS || scanID < 0)
             {
                 count--;
@@ -290,20 +265,7 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
         float diffX = laserCloud->points[i - 5].x + laserCloud->points[i - 4].x + laserCloud->points[i - 3].x + laserCloud->points[i - 2].x + laserCloud->points[i - 1].x - 10 * laserCloud->points[i].x + laserCloud->points[i + 1].x + laserCloud->points[i + 2].x + laserCloud->points[i + 3].x + laserCloud->points[i + 4].x + laserCloud->points[i + 5].x;
         float diffY = laserCloud->points[i - 5].y + laserCloud->points[i - 4].y + laserCloud->points[i - 3].y + laserCloud->points[i - 2].y + laserCloud->points[i - 1].y - 10 * laserCloud->points[i].y + laserCloud->points[i + 1].y + laserCloud->points[i + 2].y + laserCloud->points[i + 3].y + laserCloud->points[i + 4].y + laserCloud->points[i + 5].y;
         float diffZ = laserCloud->points[i - 5].z + laserCloud->points[i - 4].z + laserCloud->points[i - 3].z + laserCloud->points[i - 2].z + laserCloud->points[i - 1].z - 10 * laserCloud->points[i].z + laserCloud->points[i + 1].z + laserCloud->points[i + 2].z + laserCloud->points[i + 3].z + laserCloud->points[i + 4].z + laserCloud->points[i + 5].z;
-        // float curvature = Distance(laserCloud->points[i - 5])/5 + Distance(laserCloud->points[i - 4])/4 + Distance(laserCloud->points[i - 3])/3 + Distance(laserCloud->points[i - 2])/2 + Distance(laserCloud->points[i - 1]) 
-                        // - Distance(laserCloud->points[i])*weight*2 + Distance(laserCloud->points[i + 1]) + Distance(laserCloud->points[i + 2]) / 2 +Distance(laserCloud->points[i + 3]) / 3 + Distance(laserCloud->points[i + 4]) / 4+ Distance(laserCloud->points[i + 5]) / 5;
-        float angle_5 = angle_cal(laserCloud->points[i + 5], laserCloud->points[i - 5], laserCloud->points[i]);
-        float angle_4 = angle_cal(laserCloud->points[i + 4], laserCloud->points[i - 4], laserCloud->points[i]);
-        float angle_3 = angle_cal(laserCloud->points[i + 3], laserCloud->points[i - 3], laserCloud->points[i]);
-        float angle_2 = angle_cal(laserCloud->points[i + 2], laserCloud->points[i - 2], laserCloud->points[i]);
-        float angle_1 = angle_cal(laserCloud->points[i + 1], laserCloud->points[i - 1], laserCloud->points[i]);
-        float mean_angle = (angle_5 + angle_4 + angle_3 + angle_2 + angle_1) / 5 ;
-        float rmse = std::sqrt((std::pow(angle_5-mean_angle, 2) + std::pow(angle_4-mean_angle, 2) + std::pow(angle_3-mean_angle, 2) + std::pow(angle_2-mean_angle, 2) + std::pow(angle_1-mean_angle, 2)) / 5);
-        angle_feature[i] = mean_angle;
-        angle_std[i] = rmse;
         cloudCurvature[i] = diffX * diffX + diffY * diffY + diffZ * diffZ;
-        // cloudCurvature_scaled[i] = std::abs(curvature);
-        // std::cout<< "cloudCurvature[i]: "<<cloudCurvature[i]<<" , mean agnle:"<< mean_angle <<" , std agnle:"<<rmse<<std::endl;
         cloudSortInd[i] = i;
         cloudNeighborPicked[i] = 0;
         cloudLabel[i] = 0;
@@ -330,8 +292,6 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
 
             TicToc t_tmp;
             std::sort (cloudSortInd + sp, cloudSortInd + ep + 1, comp);
-            // std::sort (cloudSortInd + sp, cloudSortInd + ep + 1, comp_scaled);
-            // std::sort (cloudSortInd + sp, cloudSortInd + ep + 1, comp_angle);
             t_q_sort += t_tmp.toc();
 
             int largestPickedNum = 0;
@@ -341,10 +301,6 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
 
                 if (cloudNeighborPicked[ind] == 0 &&
                     cloudCurvature[ind] > 0.1)
-                // if (cloudNeighborPicked[ind] == 0 &&
-                //     cloudCurvature_scaled[ind] > 0.1)
-                // if (cloudNeighborPicked[ind] == 0 &&
-                //     angle_feature[ind] < 120 && angle_std[ind] < 20)
                 {
 
                     largestPickedNum++;
@@ -400,10 +356,6 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
 
                 if (cloudNeighborPicked[ind] == 0 &&
                     cloudCurvature[ind] < 0.1)
-                // if (cloudNeighborPicked[ind] == 0 &&
-                //     cloudCurvature_scaled[ind] < 0.1)
-                // if (cloudNeighborPicked[ind] == 0 &&
-                //     angle_feature[ind] > 155 && angle_std[ind] < 30)
                 {
 
                     cloudLabel[ind] = -1; 

@@ -249,18 +249,10 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
             correspondences_selected.reserve(cor_size_all/number_of_region*2);
             correspondences_selected.assign(correspondences.begin()+initial_pos, correspondences.begin()+end_pos);
             int cor_size = correspondences_selected.size();
-            // std::cout << "sub cor size:" << correspondences_selected.size()<<std::endl;
             Eigen::MatrixXf compatibility_matrix;
             // int size = correspondences.size();
             compatibility_matrix.resize(correspondences_selected.size(), correspondences_selected.size());
             compatibility_matrix.setZero();
-            // std::cout<< std::fixed<< std::setprecision(2);
-            //test
-            // Eigen::MatrixXf compatibility_matrix_t;
-            // int size = correspondences.size();
-            // compatibility_matrix_t.resize(correspondence_partial.size(), correspondence_partial.size());
-            // compatibility_matrix_t.setZero();
-            //test
             Corre_Match c1, c2;
             float s1, s2, dis_gap, resolution, alpha_param, score;
             resolution = 1; //_ang_resolution_X;
@@ -280,12 +272,7 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
                     s1 = Distance(c1.src, c2.src);
                     s2 = Distance(c1.tgt, c2.tgt);
                     dis_gap = std::abs(s1 - s2);
-                    // float distance  = std::sqrt(c1.src.x*c1.src.x + c1.src.y*c1.src.y + c1.src.z*c1.src.z);
-                    // resolution = 2 * distance * sin(_ang_resolution_X/2);
-                    // std::cout<< "resolution:"<<resolution<<std::endl;
                     score = std::exp(-(dis_gap*dis_gap) / (resolution*resolution));
-                    // if(score> 0.995) {count++;}
-                    // score = (score < check_threshold) ? 0: score; //consider this way to filter more correspondence pairs to decrease compute load 
                     compatibility_matrix(i, j) = score;
                     compatibility_matrix(j, i) = score;
                     if(score < score_threshold)
@@ -296,17 +283,6 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
                         // test[i] +=1;
                         // test[j] +=1;
                     }
-                    // test_v[i].push_back(score);
-                    // if(i == 1)
-                    // {
-                    //     test_v[0].push_back(score);
-                    // }else if( i==10)
-                    // {
-                    //     test_v[1].push_back(score);
-                    // }else if( i==15)
-                    // {
-                    //     test_v[2].push_back(score);
-                    // }
                 }
                 // std::cout<<"sample:" << i<< " , count:"<< count<<" , percent:"<< count*1.0/correspondence_partial.size()*100<<"%"<<std::endl;
             }
@@ -321,7 +297,7 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
                 float num_selected = selected_ratio*cor_size;
                 float selected_count_ratio = 1;
                 int donot_num_selected = (1-selected_count_ratio)*cor_size;
-                // std::cout << "-------------------------------surf sub cor size:" << correspondences_selected.size()<<"--------------------------"<<std::endl;
+                
 
                 for(int i =cor_size-1; i >=0; i--)
                 {
@@ -339,7 +315,7 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
                             break;
                         }else if(vote_record[i].score  <=50){
                             // obj.score =0.2*vote_record[0].score/vote_record[i].score;
-                            obj.score =9.0;
+                            obj.score =5.0;
                         }else
                         {
                             obj.score =1;
@@ -360,14 +336,12 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
                 float num_selected = selected_ratio*cor_size;
                 float selected_count_ratio = 1;
                 int donot_num_selected = (1-selected_count_ratio)*cor_size;
-                // std::cout << "---------------------------------sub cor size:" << correspondences_selected.size()<<"--------------------------"<<std::endl;
 
                 for(int i =cor_size-1; i >=0; i--)
                 {
                     if(i >= donot_num_selected)
                     {   
                         Vertex_Vote obj;
-                        // int indx = correspondences_selected[voter_ordered[i].index].index;
                         if(correspondences_selected[vote_record[i].index].index > correspondences.size()) continue;
                         obj.index = correspondences_selected[vote_record[i].index].index;
                         
@@ -377,8 +351,7 @@ void graph_based_correspondence_vote_simple(std::vector<Corre_Match> &correspond
                             obj.score =0;
                             break;
                         }else if(vote_record[i].score  <=50){
-                            // obj.score =0.2*vote_record[0].score/vote_record[i].score;
-                            obj.score =9.0;
+                            obj.score =5.0;
                         }else
                         {
                             obj.score =1;
