@@ -1,0 +1,61 @@
+//For A-LOAM：
+
+//Modified code for KITTI dataset 
+//Please comment out lines 189 to 199 in the scanRegistration.cpp file and then insert a new code segment in that space.
+
+/*
+	    if (angle >= -8.83)
+                scanID = int((2 - angle) * 3.0 + 0.5);
+            else
+                scanID = N_SCANS / 2 + int((-8.83 - angle) * 2.0 + 0.5);
+
+            // use [0 50]  > 50 remove outlies 
+            if (angle > 2 || angle < -24.33 || scanID > 50 || scanID < 0)
+            {
+                count--;
+                continue;
+            }
+
+*/
+        float upBound = 2
+        float lowerBound = -24.9;
+        float _factor = (N_SCANS-1) / (upBound - lowerBound);
+        scanID =  int((angle  - lowerBound) * _factor + 0.5);
+        if (scanID >= N_SCANS || scanID < 0)
+        {
+            count--;
+            continue;
+        }
+
+//Modified code for M2DGR dataset 
+//Please comment out line 180 in the scanRegistration.cpp file and then insert a new code segment in that space.
+        // scanID = int((angle + 92.0/3.0) * 3.0 / 4.0);
+        float upBound = 15
+        float lowerBound = -25;
+        float _factor = (N_SCANS-1) / (upBound - lowerBound);
+        scanID =  int((angle  - lowerBound) * _factor + 0.5);
+
+
+//For LeGO-LOAM, reconmend
+//Reference code：https://github.com/Mitchell-Lee-93/kitti-lego-loam/tree/master
+
+//Modified code for KITTI dataset 
+//Please comment out the original configuration for LIDAR in utility.h file and then insert a new code segment in that space. 
+//Vel 64
+extern const int N_SCAN = 64;
+extern const int Horizon_SCAN = 1800;
+extern const float ang_res_x = 0.2;
+extern const float ang_res_y = 0.427;
+extern const float ang_bottom = 24.9;
+extern const int groundScanInd = 50;
+
+
+//Modified code for M2DGR dataset 
+//Please comment out the original configuration for LIDAR in utility.h file and then insert a new code segment in that space. 
+// VPL-32C
+extern const int N_SCAN = 32;
+extern const int Horizon_SCAN = 1800;
+extern const float ang_res_x = 360.0/float(Horizon_SCAN);
+extern const float ang_res_y = 40/float(N_SCAN-1);
+extern const float ang_bottom = 25;
+extern const int groundScanInd = 23;
