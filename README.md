@@ -13,5 +13,4 @@ This is the beta version, and the final implementation code would be published l
 ## Acknowledgements
 Thanks for [A-LOAM](https://github.com/HKUST-Aerial-Robotics/A-LOAM).
 
-## Configuration for benchmarks
-See the file paramter_configuration_for_benchmarks.txt.
+
