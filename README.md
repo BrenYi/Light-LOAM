@@ -15,12 +15,17 @@ This is the beta version, and the final implementation code is coming soon. The 
 If you take pieces from our system in your research, please consider citing the [paper](https://arxiv.org/abs/2310.04162):
 
 ```
-@ARTICLE{lightloam,
+@ARTICLE{10439642,
   author={Yi, Shiquan and Lyu, Yang and Hua, Lin and Pan, Quan and Zhao, Chunhui},
   journal={IEEE Robotics and Automation Letters}, 
   title={Light-LOAM: A Lightweight LiDAR Odometry and Mapping based on Graph-Matching}, 
   year={2024},
+  volume={},
+  number={},
+  pages={1-8},
+  keywords={Simultaneous localization and mapping;Feature extraction;Point cloud compression;Reliability;Odometry;Laser radar;Robots;SLAM;localization;data association},
   doi={10.1109/LRA.2024.3367268}}
+
 ```
 ---------
 
