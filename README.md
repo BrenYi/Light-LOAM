@@ -18,11 +18,11 @@ If you take pieces from our system in your research, please consider citing the 
 @ARTICLE{10439642,
   author={Yi, Shiquan and Lyu, Yang and Hua, Lin and Pan, Quan and Zhao, Chunhui},
   journal={IEEE Robotics and Automation Letters}, 
-  title={Light-LOAM: A Lightweight LiDAR Odometry and Mapping based on Graph-Matching}, 
+  title={Light-LOAM: A Lightweight LiDAR Odometry and Mapping Based on Graph-Matching}, 
   year={2024},
-  volume={},
-  number={},
-  pages={1-8},
+  volume={9},
+  number={4},
+  pages={3219-3226},
   keywords={Simultaneous localization and mapping;Feature extraction;Point cloud compression;Reliability;Odometry;Laser radar;Robots;SLAM;localization;data association},
   doi={10.1109/LRA.2024.3367268}}
 
