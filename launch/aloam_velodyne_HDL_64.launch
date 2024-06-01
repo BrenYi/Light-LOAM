@@ -1,5 +1,4 @@
 <launch>
-    
     <param name="scan_line" type="int" value="64" />
 
     <!-- if 1, do mapping 10 Hz, if 2, do mapping 5 Hz. Suggest to use 1, it will adjust frequence automaticlly -->
