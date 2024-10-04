@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <package>
   <name>light_loam</name>
-  <version>0.0.0</version>
-
+  <version>0.0.1</version>
+  <description>The light version of LOAM</description>
+  <license>BSD</license>
 
   <author email="zhangji@cmu.edu">Ji Zhang</author>
+  <maintainer email="ahmetceyhunbilir16@gmail.com">Ahmet Ceyhun Bilir</maintainer>
   
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>geometry_msgs</build_depend>
